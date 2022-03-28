@@ -10,8 +10,8 @@ using namespace ariel;
 using ariel::Direction;
 const int COL = 100;
 const int MAX_LEN = 99;
-const int MIN_CHAR = 32;
-const int MAX_CHAR = 126;
+const int MIN_CHAR = 32; //min acceptable char
+const int MAX_CHAR = 126; //max acceptable char
 
 
 namespace ariel{
@@ -20,6 +20,7 @@ namespace ariel{
         if(page < 0 || row < 0 || col < 0 || col > MAX_LEN){
             throw invalid_argument("invalid input!");
         }
+        //check for invalid character input
         for (unsigned long i = 0; i < (int)msg.length(); i++)
         {
             if(msg.at(i) < MIN_CHAR || msg.at(i) > MAX_CHAR || msg.at(i) == '~'){
@@ -28,6 +29,7 @@ namespace ariel{
         }
         
         if(dir == Direction::Horizontal){
+            //check that string is acceptable length for position
             if((int)msg.length() > COL || (int)msg.length() > COL - col){
                 throw invalid_argument("invalid input!");
             }
@@ -49,6 +51,7 @@ namespace ariel{
         if(dir == Direction::Vertical){
            for (int i = 0; i < (int)msg.length(); i++)
             {
+               //checking to see if spot is written or erased already
                 if(this->pages[page][row+i][col] != '\0' && this->pages[page][row+i][col] != '_'){
                     throw invalid_argument("invalid input!");
                 }
@@ -69,11 +72,13 @@ namespace ariel{
         string text;
         
         if(dir == Direction::Horizontal){
+            //check that string is acceptable length for position
             if(len > COL - col || len > COL){
                 throw invalid_argument("invalid input!");
             }
             for (int i = col; i < col + len; i++)
                 {
+                    //if spot is empty
                     if(this->pages[page][row][i] == '\0'){
                         text += '_';
                     }  
@@ -86,6 +91,7 @@ namespace ariel{
         if(dir == Direction::Vertical){
             for (int j = 0; j < len; j++)
                 {
+                    //if spot is empty
                     if(this->pages[page][row+j][col] == '\0'){
                         text += '_'; 
                     }
@@ -99,10 +105,12 @@ namespace ariel{
     }
 
     void Notebook::erase(int page, int row, int col, ariel::Direction dir, int len){
+        //checking valid input
         if(page < 0 || row < 0 || col < 0 || col > MAX_LEN || len < 0){
             throw invalid_argument("invalid input!");
         }
         if(dir == Direction::Horizontal){
+            //check that string is acceptable length for position
             if(len > COL - col || len > COL){
                 throw invalid_argument("invalid input!");
              }
@@ -140,7 +148,6 @@ namespace ariel{
         {
             if(this->pages[page].find(i) == this->pages[page].end()){
                 cout << i << ": ____________________________________________________________________________________________________" << endl;
-                //printf("%d: ", "%s\n", i, "____________________________________________________________________________________________________");
             }
             else{
                 for (int j = 0; j < COL; j++)
@@ -153,7 +160,6 @@ namespace ariel{
                     }
                 }
                 cout << i << ": " << s << endl;
-                //printf("%d: ", "%s\n", i, s.c_str());
             }
         }
     }
