@@ -9,23 +9,26 @@ using namespace std;
 using namespace ariel;
 using ariel::Direction;
 const int COL = 100;
+const int MAX_LEN = 99;
+const int MIN_CHAR = 32;
+const int MAX_CHAR = 126;
 
 
 namespace ariel{
 
     void Notebook::write(int page, int row, int col, ariel::Direction dir, string msg){
-        if(page < 0 || row < 0 || col < 0 || col > 99){
+        if(page < 0 || row < 0 || col < 0 || col > MAX_LEN){
             throw invalid_argument("invalid input!");
         }
         for (unsigned long i = 0; i < (int)msg.length(); i++)
         {
-            if(msg.at(i) < 32 || msg.at(i) > 126 || msg.at(i) == '~'){
+            if(msg.at(i) < MIN_CHAR || msg.at(i) > MAX_CHAR || msg.at(i) == '~'){
                 throw invalid_argument("invalid input!");
             }
         }
         
         if(dir == Direction::Horizontal){
-            if((int)msg.length() > 100 || (int)msg.length() > 100 - col){
+            if((int)msg.length() > COL || (int)msg.length() > COL - col){
                 throw invalid_argument("invalid input!");
             }
             //checking to see if spot is written or erased already
@@ -60,13 +63,13 @@ namespace ariel{
     }
     
     string Notebook::read(int page, int row, int col, ariel::Direction dir, int len){
-        if(page < 0 || row < 0 || col < 0 || col > 99 || len < 0){
+        if(page < 0 || row < 0 || col < 0 || col > MAX_LEN || len < 0){
             throw invalid_argument("invalid input!");
         }
         string text;
         
         if(dir == Direction::Horizontal){
-            if(len > 100 - col || len > 100){
+            if(len > COL - col || len > COL){
                 throw invalid_argument("invalid input!");
             }
             for (int i = col; i < col + len; i++)
@@ -96,11 +99,11 @@ namespace ariel{
     }
 
     void Notebook::erase(int page, int row, int col, ariel::Direction dir, int len){
-        if(page < 0 || row < 0 || col < 0 || col > 99 || len < 0){
+        if(page < 0 || row < 0 || col < 0 || col > MAX_LEN || len < 0){
             throw invalid_argument("invalid input!");
         }
         if(dir == Direction::Horizontal){
-            if(len > 100 - col || len > 100){
+            if(len > COL - col || len > COL){
                 throw invalid_argument("invalid input!");
              }
             for (int i = col; i < col + len; i++)
